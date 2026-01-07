@@ -23,6 +23,7 @@ class DharmaWaitlistPro {
     }
 
     init() {
+        this.formLoadTime = Date.now(); // Track when form loaded for bot detection
         this.setupForm();
         this.updateCounterDisplay();
         this.startPeriodicUpdates();
@@ -155,8 +156,35 @@ class DharmaWaitlistPro {
         }
     }
 
+    // Generate browser fingerprint for bot detection
+    generateFingerprint() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.fillText('DharmaMind', 2, 2);
+        
+        const data = [
+            navigator.userAgent,
+            navigator.language,
+            screen.width + 'x' + screen.height,
+            new Date().getTimezoneOffset(),
+            canvas.toDataURL()
+        ].join('|');
+        
+        // Simple hash
+        let hash = 0;
+        for (let i = 0; i < data.length; i++) {
+            hash = ((hash << 5) - hash) + data.charCodeAt(i);
+            hash = hash & hash;
+        }
+        return Math.abs(hash).toString(36);
+    }
+
     // Try multiple API endpoints with fallback
     async submitToAPI(email) {
+        const fingerprint = this.generateFingerprint();
+        
         for (let i = 0; i < this.apiEndpoints.length; i++) {
             const endpoint = this.apiEndpoints[i];
             
@@ -166,16 +194,25 @@ class DharmaWaitlistPro {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'X-Fingerprint': fingerprint,
+                            'X-Timestamp': this.formLoadTime?.toString() || Date.now().toString()
                         },
                         body: JSON.stringify({
                             email: email,
-                            timestamp: new Date().toISOString(),
-                            source: 'waitlist-form'
+                            _timestamp: this.formLoadTime || Date.now(),
+                            _fingerprint: fingerprint,
+                            source: 'waitlist-form',
+                            referrer: document.referrer || 'direct'
                         })
                     });
 
                     if (response.ok) {
-                        console.log(`Successfully submitted to ${endpoint}`);
+                        const data = await response.json();
+                        console.log(`Successfully submitted to ${endpoint}`, data);
+                        // Store signup ID if returned
+                        if (data.signupId) {
+                            localStorage.setItem('dharma-signup-id', data.signupId);
+                        }
                         return true;
                     }
                 } catch (error) {
