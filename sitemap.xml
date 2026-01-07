@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+   
+   <!-- Main landing page - Life Guidance & Personal Growth -->
+   <url>
+      <loc>https://dharmamind.ai/</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>1.0</priority>
+      <image:image>
+         <image:loc>https://dharmamind.ai/logo.jpeg</image:loc>
+         <image:title>DharmaMind AI - Life Guidance App</image:title>
+      </image:image>
+   </url>
+   
+   <!-- Features - Ethical AI Guidance -->
+   <url>
+      <loc>https://dharmamind.ai/#features</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.9</priority>
+   </url>
+   
+   <!-- About - Purpose Driven AI -->
+   <url>
+      <loc>https://dharmamind.ai/#about</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <!-- Waitlist Signup - Join Exclusive Access -->
+   <url>
+      <loc>https://dharmamind.ai/#waitlist</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.95</priority>
+   </url>
+   
+   <!-- FAQ - Frequently Asked Questions -->
+   <url>
+      <loc>https://dharmamind.ai/#faq</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.85</priority>
+   </url>
+   
+   <!-- How It Works - See DharmaMind in Action -->
+   <url>
+      <loc>https://dharmamind.ai/#how-it-works</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.85</priority>
+   </url>
+   
+   <!-- Roadmap - Our Journey Ahead -->
+   <url>
+      <loc>https://dharmamind.ai/#roadmap</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <!-- Admin Dashboard -->
+   <url>
+      <loc>https://dharmamind.ai/admin-dashboard.html</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.3</priority>
+   </url>
+   
+   <!-- Privacy Policy -->
+   <url>
+      <loc>https://dharmamind.ai/privacy.html</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   
+   <!-- Terms of Service -->
+   <url>
+      <loc>https://dharmamind.ai/terms.html</loc>
+      <lastmod>2025-12-21</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   
+
+</urlset>

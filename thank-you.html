@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Thank You - Welcome to DharmaMind</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes checkmark {
+            0% {
+                stroke-dashoffset: 100;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes circle {
+            0% {
+                stroke-dashoffset: 157;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .checkmark-circle {
+            stroke-dasharray: 157;
+            stroke-dashoffset: 157;
+            animation: circle 0.6s ease-out forwards;
+        }
+        
+        .checkmark-check {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: checkmark 0.4s 0.6s ease-out forwards;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-screen flex items-center justify-center p-4">
+    
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+    
+    <div class="max-w-2xl w-full">
+        <!-- Success Card -->
+        <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 text-center animate-fade-in-up">
+            
+            <!-- Animated Checkmark -->
+            <div class="mb-8 flex justify-center">
+                <svg class="w-24 h-24" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" stroke="#10b981" stroke-width="2"/>
+                    <path class="checkmark-check" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" d="M14 27l7.5 7.5L38 18"/>
+                </svg>
+            </div>
+            
+            <!-- Main Message -->
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                🎉 You're On The List!
+            </h1>
+            
+            <p class="text-xl text-slate-600 mb-8 leading-relaxed">
+                Welcome to the DharmaMind family. You're now among the <strong class="text-gray-700">first to experience AI with soul</strong>.
+            </p>
+            
+            <!-- Info Box -->
+            <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 mb-8 text-left">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg class="w-6 h-6 text-slate-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    What Happens Next?
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-slate-600 text-white rounded-full flex items-center justify-center font-bold text-sm mr-3">
+                            1
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Check Your Email</h3>
+                            <p class="text-slate-600 text-sm">We've sent you a confirmation email. If you don't see it, check your spam folder.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-slate-600 text-white rounded-full flex items-center justify-center font-bold text-sm mr-3">
+                            2
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Stay Tuned</h3>
+                            <p class="text-slate-600 text-sm">We'll keep you updated on our progress and send you exclusive sneak peeks.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-slate-600 text-white rounded-full flex items-center justify-center font-bold text-sm mr-3">
+                            3
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Early Access Launch</h3>
+                            <p class="text-slate-600 text-sm">You'll be the first to know when we launch in <strong>Early 2026</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Share Section -->
+            <div class="bg-gradient-to-br from-slate-600 to-gray-600 rounded-2xl p-6 mb-8 text-white">
+                <h2 class="text-xl font-bold mb-3">
+                    💝 Share DharmaMind With Friends
+                </h2>
+                <p class="text-slate-100 text-sm mb-4">
+                    Know someone who could benefit from AI with soul? Share the wisdom!
+                </p>
+                
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <a href="https://twitter.com/intent/tweet?text=I%20just%20joined%20the%20waitlist%20for%20DharmaMind%20-%20AI%20with%20Soul%20for%20life%20guidance%20and%20personal%20growth!%20🧘‍♂️✨&url=https://dharmamindai.com" 
+                       target="_blank"
+                       class="bg-white text-slate-600 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 transition-all duration-300 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                        Share on Twitter
+                    </a>
+                    
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://dharmamindai.com" 
+                       target="_blank"
+                       class="bg-white text-slate-600 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 transition-all duration-300 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        Share on LinkedIn
+                    </a>
+                </div>
+                
+                <!-- Copy Link -->
+                <div class="mt-4">
+                    <div class="flex gap-2">
+                        <input 
+                            type="text" 
+                            value="https://dharmamindai.com" 
+                            id="share-link"
+                            readonly
+                            class="flex-1 px-4 py-2 rounded-lg bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        >
+                        <button 
+                            onclick="copyLink()"
+                            class="px-6 py-2 bg-white text-slate-600 rounded-lg font-semibold hover:bg-slate-50 transition-all duration-300">
+                            Copy Link
+                        </button>
+                    </div>
+                    <p id="copy-feedback" class="text-sm text-green-200 mt-2 opacity-0 transition-opacity">✓ Link copied!</p>
+                </div>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/" 
+                   class="bg-slate-600 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-gray-600 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                    Back to Homepage
+                </a>
+                
+                <a href="https://twitter.com/DharmaMindAI" 
+                   target="_blank"
+                   class="bg-slate-100 text-slate-700 px-8 py-4 rounded-2xl font-semibold hover:bg-slate-200 transition-all duration-300">
+                    Follow Us on Twitter
+                </a>
+            </div>
+            
+            <!-- Footer Message -->
+            <div class="mt-8 pt-6 border-t border-slate-200">
+                <p class="text-slate-500 text-sm">
+                    Questions? Email us at <a href="mailto:hello@dharmamindai.com" class="text-slate-700 font-semibold hover:underline">hello@dharmamindai.com</a>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Bottom Trust Badge -->
+        <div class="mt-6 text-center">
+            <p class="text-slate-400 text-sm">
+                🔒 Your email is safe with us. We never spam or share your information.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Copy link function
+        function copyLink() {
+            const input = document.getElementById('share-link');
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile
+            
+            navigator.clipboard.writeText(input.value).then(() => {
+                const feedback = document.getElementById('copy-feedback');
+                feedback.style.opacity = '1';
+                setTimeout(() => {
+                    feedback.style.opacity = '0';
+                }, 2000);
+            });
+        }
+        
+        // Confetti animation
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#60a5fa', '#34d399', '#fbbf24', '#f87171', '#a78bfa'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    container.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 30);
+            }
+        }
+        
+        // Trigger confetti on load
+        window.addEventListener('load', createConfetti);
+        
+        // Track page view (Google Analytics)
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'conversion', {
+                'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
+                'event_category': 'Waitlist',
+                'event_label': 'Thank You Page View'
+            });
+        }
+    </script>
+</body>
+</html>

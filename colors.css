@@ -1,0 +1,176 @@
+/**
+ * DharmaMind - Color System Documentation
+ * 
+ * NOTE: This file serves as COLOR DOCUMENTATION and reference.
+ * The platform uses TAILWIND UTILITY CLASSES for styling (standard approach).
+ * The actual color palette is defined in index.html Tailwind config (lines 76-83).
+ * 
+ * These CSS variables are available but not actively used throughout the site.
+ * This is INTENTIONAL and follows Tailwind best practices.
+ * 
+ * Current Theme: Minimal Gray/Slate (Professional & Clean)
+ * 
+ * To change colors globally:
+ * 1. Update Tailwind config in index.html (lines 76-83)
+ * 2. Or use search-replace for Tailwind classes (e.g., bg-slate-600 → bg-slate-500)
+ */
+
+:root {
+    /* ===== PRIMARY BRAND COLORS ===== */
+    --color-primary: #64748b;        /* slate-500 - Main brand color (mild dark gray) */
+    --color-primary-light: #94a3b8;  /* slate-400 - Lighter variation */
+    --color-primary-dark: #475569;   /* slate-600 - Slightly darker */
+    
+    /* ===== SECONDARY COLORS ===== */
+    --color-secondary: #6b7280;      /* gray-500 - Mid-tone gray */
+    --color-secondary-light: #9ca3af; /* gray-400 - Softer gray */
+    --color-secondary-lighter: #d1d5db; /* gray-300 - Very light gray */
+    
+    /* ===== ACCENT COLORS ===== */
+    --color-accent: #71717a;         /* zinc-500 - Used for highlights */
+    --color-accent-light: #a1a1aa;   /* zinc-400 - Softer accent */
+    --color-accent-dark: #52525b;    /* zinc-600 - Deeper accent */
+    
+    /* ===== BACKGROUND COLORS ===== */
+    --color-bg-primary: #ffffff;     /* White background */
+    --color-bg-secondary: #f8fafc;   /* slate-50 - Light sections */
+    --color-bg-tertiary: #f1f5f9;    /* slate-100 - Cards, inputs */
+    --color-bg-muted: #e2e8f0;       /* slate-200 - Borders, dividers */
+    
+    /* ===== TEXT COLORS ===== */
+    --color-text-primary: #374151;   /* gray-700 - Main text (easier on eyes) */
+    --color-text-secondary: #4b5563; /* gray-600 - Secondary text */
+    --color-text-muted: #6b7280;     /* gray-500 - Muted text */
+    --color-text-light: #9ca3af;     /* gray-400 - Very light text */
+    
+    /* ===== INTERACTIVE STATES ===== */
+    --color-hover: #4b5563;          /* gray-600 - Hover states (softer) */
+    --color-active: #374151;         /* gray-700 - Active states (mild) */
+    --color-focus: #64748b;          /* slate-500 - Focus rings (medium) */
+    
+    /* ===== STATUS COLORS (Minimal) ===== */
+    --color-success: #6b7280;        /* gray-500 - Success (mid-tone gray) */
+    --color-warning: #71717a;        /* zinc-500 - Warning (neutral gray) */
+    --color-error: #57534e;          /* stone-600 - Error (warm gray) */
+    --color-info: #64748b;           /* slate-500 - Info (balanced gray) */
+    
+    /* ===== GRADIENT COLORS ===== */
+    /* All gradients use mild gray tones only */
+    --gradient-start: #64748b;       /* slate-500 - Mild dark gray */
+    --gradient-middle: #6b7280;      /* gray-500 - Mid-tone */
+    --gradient-end: #71717a;         /* zinc-500 - Balanced gray */
+    
+    /* ===== FEATURE ICON COLORS ===== */
+    /* Using different shades of mid-tone gray for visual distinction */
+    --color-icon-1: #64748b;         /* slate-500 - Balanced */
+    --color-icon-2: #6b7280;         /* gray-500 - Neutral */
+    --color-icon-3: #71717a;         /* zinc-500 - Cool gray */
+    --color-icon-4: #78716c;         /* stone-500 - Warm gray */
+    --color-icon-5: #737373;         /* neutral-500 - Pure gray */
+    --color-icon-6: #64748b;         /* slate-500 - Cycle back */
+    
+    /* ===== ROADMAP/TIMELINE COLORS ===== */
+    --color-phase-1: #64748b;        /* slate-500 - Mild */
+    --color-phase-2: #6b7280;        /* gray-500 - Medium */
+    --color-phase-3: #71717a;        /* zinc-500 - Balanced */
+    --color-phase-4: #78716c;        /* stone-500 - Warm */
+    
+    /* ===== ADVISORY BOARD COLORS ===== */
+    --color-advisor-1: #64748b;      /* slate-500 - Mild gray */
+    --color-advisor-2: #6b7280;      /* gray-500 - Neutral */
+    --color-advisor-3: #71717a;      /* zinc-500 - Cool */
+    --color-advisor-4: #78716c;      /* stone-500 - Warm */
+    
+    /* ===== SHADOW COLORS ===== */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    
+    /* ===== RATING/STARS COLOR ===== */
+    --color-rating: #71717a;         /* zinc-500 - Stars (mild gray instead of gold) */
+    
+    /* ===== TRANSPARENCY VALUES ===== */
+    --opacity-10: 0.1;
+    --opacity-20: 0.2;
+    --opacity-30: 0.3;
+    --opacity-50: 0.5;
+    --opacity-75: 0.75;
+    --opacity-90: 0.9;
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Background Colors */
+.bg-primary { background-color: var(--color-primary); }
+.bg-primary-light { background-color: var(--color-primary-light); }
+.bg-primary-dark { background-color: var(--color-primary-dark); }
+.bg-secondary { background-color: var(--color-secondary); }
+.bg-accent { background-color: var(--color-accent); }
+
+/* Text Colors */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+
+/* Border Colors */
+.border-primary { border-color: var(--color-primary); }
+.border-secondary { border-color: var(--color-secondary); }
+.border-muted { border-color: var(--color-bg-muted); }
+
+/* Gradients */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+}
+
+.bg-gradient-icon-1 {
+    background: linear-gradient(135deg, var(--color-icon-1), var(--color-secondary));
+}
+
+.bg-gradient-icon-2 {
+    background: linear-gradient(135deg, var(--color-icon-2), var(--color-accent));
+}
+
+.bg-gradient-icon-3 {
+    background: linear-gradient(135deg, var(--color-icon-3), var(--color-secondary-lighter));
+}
+
+/* Feature Icon Backgrounds */
+.icon-bg-1 { background: linear-gradient(135deg, var(--color-icon-1), var(--color-icon-2)); }
+.icon-bg-2 { background: linear-gradient(135deg, var(--color-icon-2), var(--color-icon-3)); }
+.icon-bg-3 { background: linear-gradient(135deg, var(--color-icon-3), var(--color-icon-4)); }
+.icon-bg-4 { background: linear-gradient(135deg, var(--color-icon-4), var(--color-icon-5)); }
+.icon-bg-5 { background: linear-gradient(135deg, var(--color-icon-5), var(--color-icon-6)); }
+.icon-bg-6 { background: linear-gradient(135deg, var(--color-icon-6), var(--color-icon-1)); }
+
+/* ===== QUICK THEME SWITCHING ===== */
+
+/*
+To switch to a different color theme, simply change the values above.
+
+Example: Blue Theme
+--color-primary: #1e40af;
+--color-primary-light: #3b82f6;
+--color-primary-dark: #1e3a8a;
+
+Example: Purple Theme
+--color-primary: #7c3aed;
+--color-primary-light: #8b5cf6;
+--color-primary-dark: #6d28d9;
+
+Example: Green Theme
+--color-primary: #059669;
+--color-primary-light: #10b981;
+--color-primary-dark: #047857;
+*/
+
+/* ===== NOTES ===== */
+/*
+Current Design Philosophy:
+- Minimal and professional
+- Gray/slate color palette
+- No bright colors (blue, green, red, etc.)
+- Different shades of gray for visual hierarchy
+- Clean and modern aesthetic
+*/
