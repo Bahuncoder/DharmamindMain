@@ -148,16 +148,16 @@
                     </div>
                 </div>
 
-                <!-- Avg Motivation Length -->
+                <!-- Conversion Rate -->
                 <div class="glass-effect rounded-xl p-6 animate-fadeIn">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-600">Avg Motivation</p>
+                            <p class="text-sm font-medium text-gray-600">Conversion Rate</p>
                             <p class="text-2xl font-bold text-gray-900" id="avgMotivation">-</p>
                         </div>
                         <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                             </svg>
                         </div>
                     </div>
@@ -186,7 +186,7 @@
             <!-- Recent Registrations -->
             <div class="glass-effect rounded-xl p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Recent Registrations</h3>
+                    <h3 class="text-lg font-semibold text-gray-900">Waitlist Signups</h3>
                     <span class="text-sm text-gray-600" id="lastUpdated">-</span>
                 </div>
                 
@@ -194,16 +194,17 @@
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="border-b border-gray-200">
-                                <th class="text-left py-2 font-medium text-gray-700">#</th>
-                                <th class="text-left py-2 font-medium text-gray-700">Name</th>
-                                <th class="text-left py-2 font-medium text-gray-700">Email</th>
-                                <th class="text-left py-2 font-medium text-gray-700">Motivation</th>
-                                <th class="text-left py-2 font-medium text-gray-700">Timestamp</th>
+                                <th class="text-left py-3 font-medium text-gray-700">#</th>
+                                <th class="text-left py-3 font-medium text-gray-700">Email</th>
+                                <th class="text-left py-3 font-medium text-gray-700">Signup ID</th>
+                                <th class="text-left py-3 font-medium text-gray-700">Country</th>
+                                <th class="text-left py-3 font-medium text-gray-700">Date</th>
+                                <th class="text-left py-3 font-medium text-gray-700">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="recentRegistrations">
                             <tr>
-                                <td colspan="5" class="text-center py-8 text-gray-500">Loading...</td>
+                                <td colspan="6" class="text-center py-8 text-gray-500">Loading...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -296,49 +297,79 @@
         }
 
         function updateDashboard(data) {
-            const { stats, recentRegistrations } = data;
+            const { stats, recentSignups, chartData } = data;
 
             // Update stats cards
-            document.getElementById('totalRegistrations').textContent = stats.totalRegistrations;
-            document.getElementById('todayRegistrations').textContent = stats.todayRegistrations;
-            document.getElementById('weekRegistrations').textContent = stats.thisWeekRegistrations;
-            document.getElementById('avgMotivation').textContent = stats.avgMotivationLength + ' chars';
+            document.getElementById('totalRegistrations').textContent = stats.totalSignups || 0;
+            document.getElementById('todayRegistrations').textContent = stats.todaySignups || 0;
+            document.getElementById('weekRegistrations').textContent = stats.weekSignups || 0;
+            document.getElementById('avgMotivation').textContent = (stats.conversionRate || 0) + '%';
             document.getElementById('lastUpdated').textContent = 'Updated: ' + new Date().toLocaleTimeString();
 
             // Update recent registrations table
             const tbody = document.getElementById('recentRegistrations');
-            tbody.innerHTML = recentRegistrations.map(user => `
-                <tr class="border-b border-gray-100 hover:bg-gray-50">
-                    <td class="py-2">#${user.position}</td>
-                    <td class="py-2 font-medium">${user.name}</td>
-                    <td class="py-2">${user.email}</td>
-                    <td class="py-2 max-w-xs truncate">${user.motivation || 'N/A'}</td>
-                    <td class="py-2">${new Date(user.timestamp).toLocaleString()}</td>
+            
+            if (!recentSignups || recentSignups.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-8 text-gray-500">
+                            No signups yet. Share your waitlist to get started!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = recentSignups.map((user, index) => `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td class="py-3 text-gray-500">${index + 1}</td>
+                    <td class="py-3">
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium text-gray-900">${user.email}</span>
+                            <button onclick="copyEmail('${user.fullEmail}')" class="text-gray-400 hover:text-gray-600" title="Copy full email">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="py-3 font-mono text-xs text-gray-600">${user.signupId || '-'}</td>
+                    <td class="py-3 text-gray-600">${user.country || 'Unknown'}</td>
+                    <td class="py-3 text-gray-600">${new Date(user.date).toLocaleString()}</td>
+                    <td class="py-3">
+                        <a href="mailto:${user.fullEmail}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            Send Email
+                        </a>
+                    </td>
                 </tr>
             `).join('');
 
-            // Update charts
-            updateRegistrationChart(stats.registrationsByDay);
-            updateDomainsChart(stats.topDomains);
+            // Update charts if data available
+            if (chartData) {
+                updateRegistrationChart(chartData);
+            }
+        }
+        
+        function copyEmail(email) {
+            navigator.clipboard.writeText(email).then(() => {
+                alert('Email copied: ' + email);
+            });
         }
 
-        function updateRegistrationChart(registrationsByDay) {
+        function updateRegistrationChart(chartData) {
             const ctx = document.getElementById('registrationChart').getContext('2d');
             
             if (registrationChart) {
                 registrationChart.destroy();
             }
 
-            const sortedDates = Object.keys(registrationsByDay).sort();
-            const last7Days = sortedDates.slice(-7);
-
             registrationChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: last7Days.map(date => new Date(date).toLocaleDateString()),
+                    labels: chartData.labels,
                     datasets: [{
-                        label: 'Registrations',
-                        data: last7Days.map(date => registrationsByDay[date]),
+                        label: 'Signups',
+                        data: chartData.values,
                         borderColor: '#6b7280',
                         backgroundColor: 'rgba(107, 114, 128, 0.1)',
                         fill: true,
