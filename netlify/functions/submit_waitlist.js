@@ -1,16 +1,17 @@
 // Netlify serverless function for waitlist submission
-// Enterprise Grade v4.0 - Production-ready with full security
-// Features: Rate limiting, bot protection, email validation, analytics, persistent storage
+// Enterprise Grade v4.1 - Production-ready with persistent storage
+// Features: Rate limiting, bot protection, email validation, analytics, Netlify Blobs storage
 
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const { getStore } = require('@netlify/blobs');
 
 // ============================================
 // CONFIGURATION
 // ============================================
 
 const CONFIG = {
-  version: '4.0.0',
+  version: '4.1.0',
   rateLimit: {
     windowMs: 60 * 60 * 1000, // 1 hour
     maxRequests: 5,           // per IP per hour
@@ -46,14 +47,49 @@ const headers = {
 };
 
 // ============================================
-// IN-MEMORY STORES (For serverless - resets on cold start)
-// For true persistence, use Netlify Blobs, FaunaDB, or Supabase
+// IN-MEMORY STORES (For rate limiting - OK to reset)
 // ============================================
 
 const rateLimitStore = new Map();
-const emailStore = new Set();
 const blockedIPs = new Set();
 const analyticsBuffer = [];
+
+// ============================================
+// PERSISTENT STORAGE (Netlify Blobs)
+// ============================================
+
+async function getWaitlistStore() {
+  return getStore('waitlist');
+}
+
+async function getSignups() {
+  try {
+    const store = await getWaitlistStore();
+    const data = await store.get('signups', { type: 'json' });
+    return data || [];
+  } catch (error) {
+    console.error('Error reading signups:', error);
+    return [];
+  }
+}
+
+async function saveSignup(signup) {
+  try {
+    const store = await getWaitlistStore();
+    const signups = await getSignups();
+    signups.push(signup);
+    await store.setJSON('signups', signups);
+    return true;
+  } catch (error) {
+    console.error('Error saving signup:', error);
+    return false;
+  }
+}
+
+async function emailExists(emailHash) {
+  const signups = await getSignups();
+  return signups.some(s => s.emailHash === emailHash);
+}
 
 // ============================================
 // UTILITY FUNCTIONS
@@ -725,8 +761,9 @@ exports.handler = async (event, context) => {
       const email = validation.email;
       const emailHash = hashEmail(email);
 
-      // Check for duplicates
-      if (emailStore.has(emailHash)) {
+      // Check for duplicates (persistent check)
+      const isDuplicate = await emailExists(emailHash);
+      if (isDuplicate) {
         logAnalytics('duplicate_signup', { ip, emailHash });
         
         return {
@@ -743,10 +780,24 @@ exports.handler = async (event, context) => {
 
       // Generate signup ID
       const signupId = generateSignupId();
-      const position = emailStore.size + 1;
+      const allSignups = await getSignups();
+      const position = allSignups.length + 1;
 
-      // Store email hash
-      emailStore.add(emailHash);
+      // Save signup to persistent storage
+      const signupData = {
+        signupId,
+        email,
+        emailHash,
+        position,
+        ip,
+        userAgent,
+        country,
+        referrer: referrer.substring(0, 200),
+        botScore: botCheck.score,
+        createdAt: new Date().toISOString()
+      };
+      
+      await saveSignup(signupData);
 
       // Log successful signup
       logAnalytics('signup_success', {
