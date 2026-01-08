@@ -141,10 +141,10 @@ class DharmaWaitlistPro {
         this.setLoadingState(submitBtn, true);
         
         try {
-            const success = await this.submitToAPI(email);
+            const result = await this.submitToAPI(email);
             
-            if (success) {
-                this.handleSuccessfulSubmission(email, form);
+            if (result) {
+                this.handleSuccessfulSubmission(email, form, result);
             } else {
                 throw new Error('Submission failed');
             }
@@ -213,7 +213,7 @@ class DharmaWaitlistPro {
                         if (data.signupId) {
                             localStorage.setItem('dharma-signup-id', data.signupId);
                         }
-                        return true;
+                        return data; // Return full response data
                     }
                 } catch (error) {
                     console.warn(`Attempt ${attempt + 1} failed for ${endpoint}:`, error);
@@ -227,7 +227,7 @@ class DharmaWaitlistPro {
         
         // If all endpoints fail, still store locally for later sync
         this.storeLocalSubmission(email);
-        return true; // Return true to show success to user
+        return { success: true, signupId: 'DM-OFFLINE-' + Date.now().toString(36).toUpperCase() };
     }
 
     // Store submission locally if API fails
@@ -242,9 +242,10 @@ class DharmaWaitlistPro {
     }
 
     // Handle successful submission
-    handleSuccessfulSubmission(email, form) {
+    handleSuccessfulSubmission(email, form, apiResponse = {}) {
         // Get marketing consent
         const marketingConsent = form.querySelector('#marketing-consent')?.checked || false;
+        const signupId = apiResponse.signupId || localStorage.getItem('dharma-signup-id') || 'DM-' + Date.now().toString(36).toUpperCase();
         
         // Track analytics before other actions
         if (window.trackWaitlistSignup) {
@@ -268,52 +269,109 @@ class DharmaWaitlistPro {
         // Mark email as submitted
         this.markEmailSubmitted(email);
 
-        // Show success message with confetti effect
-        this.showSuccessAnimation(form);
-        this.showMessage(
-            '🎉 Welcome to DharmaMind! Check your inbox for a special welcome message.', 
-            'success', 
-            form
-        );
-
-        // Clear form
-        form.reset();
+        // Show premium success state (like Linear/Notion)
+        this.showPremiumSuccessState(form, email, signupId);
 
         // Track legacy event (if analytics is set up)
-        this.trackEvent('waitlist_signup', { email: email, marketing_consent: marketingConsent });
+        this.trackEvent('waitlist_signup', { email: email, marketing_consent: marketingConsent, signupId: signupId });
     }
 
-    // Add confetti/celebration animation
-    showSuccessAnimation(form) {
-        const container = form.closest('#waitlist');
-        if (!container) return;
+    // Premium success state like big companies
+    showPremiumSuccessState(form, email, signupId) {
+        const formContainer = form.closest('.bg-white') || form.parentElement;
         
-        // Add success state
-        container.classList.add('signup-success');
+        // Create success overlay
+        const successHTML = `
+            <div class="success-state text-center py-8 px-4 animate-fade-in">
+                <!-- Success Icon -->
+                <div class="mx-auto w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-6 animate-scale-in">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                
+                <!-- Success Title -->
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">You're on the list! 🎉</h3>
+                <p class="text-gray-500 mb-6">We've sent a confirmation to <strong class="text-gray-700">${email}</strong></p>
+                
+                <!-- Signup ID Card -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-5 mb-6 border border-gray-200">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-2 font-medium">Your Priority ID</p>
+                    <p class="text-xl font-mono font-bold text-gray-900 tracking-wide">${signupId}</p>
+                    <p class="text-xs text-gray-400 mt-2">Save this for early access priority</p>
+                </div>
+                
+                <!-- What's Next -->
+                <div class="text-left bg-amber-50 rounded-xl p-5 border border-amber-100">
+                    <p class="text-sm font-semibold text-amber-800 mb-3">✨ What happens next?</p>
+                    <ul class="text-sm text-amber-700 space-y-2">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>Check your inbox for a welcome email</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>We'll notify you before public launch</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>Founding members get exclusive benefits</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Share Section -->
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                    <p class="text-sm text-gray-500 mb-3">Share with others who might be interested</p>
+                    <div class="flex justify-center gap-3">
+                        <a href="https://twitter.com/intent/tweet?text=Just%20joined%20the%20%40DharmaMindAI%20waitlist%20%E2%80%93%20AI%20with%20soul%2C%20powered%20by%20dharma.%20%F0%9F%A7%98%E2%80%8D%E2%99%82%EF%B8%8F%20Get%20early%20access%3A%20https%3A%2F%2Fdharmamind.ai" target="_blank" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                            <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fdharmamind.ai" target="_blank" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                            <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </a>
+                        <button onclick="navigator.clipboard.writeText('https://dharmamind.ai').then(() => this.innerHTML = '<svg class=\\'w-5 h-5 text-green-600\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'2\\' d=\\'M5 13l4 4L19 7\\'/></svg>')" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
         
-        // Create celebration particles
-        for (let i = 0; i < 20; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'success-particle';
-            particle.style.cssText = `
-                position: absolute;
-                width: 10px;
-                height: 10px;
-                background: ${['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'][Math.floor(Math.random() * 4)]};
-                border-radius: 50%;
-                left: 50%;
-                top: 50%;
+        // Hide form and show success
+        form.style.display = 'none';
+        
+        // Insert success state
+        const successDiv = document.createElement('div');
+        successDiv.innerHTML = successHTML;
+        form.parentNode.insertBefore(successDiv, form.nextSibling);
+        
+        // Add confetti effect
+        this.launchConfetti();
+    }
+
+    // Confetti celebration effect
+    launchConfetti() {
+        const colors = ['#10b981', '#f59e0b', '#3b82f6', '#8b5cf6', '#ec4899'];
+        const confettiCount = 50;
+        
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.cssText = `
+                position: fixed;
+                width: ${Math.random() * 10 + 5}px;
+                height: ${Math.random() * 10 + 5}px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                left: ${Math.random() * 100}vw;
+                top: -20px;
+                border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
                 pointer-events: none;
-                animation: particle-burst 0.8s ease-out forwards;
-                --tx: ${(Math.random() - 0.5) * 200}px;
-                --ty: ${(Math.random() - 0.5) * 200}px;
+                z-index: 9999;
+                animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
             `;
-            container.appendChild(particle);
-            setTimeout(() => particle.remove(), 800);
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 5000);
         }
-        
-        // Remove success state after animation
-        setTimeout(() => container.classList.remove('signup-success'), 1000);
     }
 
     // Handle submission error
