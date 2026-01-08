@@ -254,21 +254,27 @@ function detectBot(event, body) {
 // ============================================
 
 function createTransporter() {
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const port = parseInt(process.env.SMTP_PORT || '587');
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  
+  console.log(`📧 SMTP Config: host=${host}, port=${port}, user=${user ? user.substring(0, 5) + '***' : 'NOT SET'}, pass=${pass ? '***SET***' : 'NOT SET'}`);
+  
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp-mail.outlook.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false,
+    host: host,
+    port: port,
+    secure: port === 465, // true for 465, false for other ports
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
+      user: user,
+      pass: pass
     },
     tls: {
-      ciphers: 'SSLv3',
       rejectUnauthorized: false
     },
-    pool: true,
-    maxConnections: 5,
-    maxMessages: 100
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000
   });
 }
 
@@ -330,7 +336,8 @@ async function sendAdminNotification(data) {
 </html>`;
 
   try {
-    await transporter.sendMail({
+    console.log(`📧 Attempting to send admin notification to: ${adminEmail}`);
+    const info = await transporter.sendMail({
       from: `"DharmaMind System" <${process.env.SMTP_USER}>`,
       to: adminEmail,
       subject: `🎉 New Signup: ${email} [${signupId}]`,
@@ -338,9 +345,11 @@ async function sendAdminNotification(data) {
       text: `New Waitlist Signup!\n\nID: ${signupId}\nEmail: ${email}\nTime: ${new Date().toISOString()}\nIP: ${ip}\nBot Score: ${botScore}/100`,
       priority: 'high'
     });
-    return { success: true };
+    console.log(`✅ Admin notification sent successfully! MessageId: ${info.messageId}`);
+    return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('❌ Admin notification failed:', error.message);
+    console.error('❌ Full error:', JSON.stringify(error, null, 2));
     return { success: false, error: error.message };
   }
 }
@@ -462,6 +471,7 @@ The DharmaMind Team
 `;
 
   try {
+    console.log(`📧 Attempting to send welcome email to: ${email}`);
     const info = await transporter.sendMail({
       from: `"DharmaMind" <${process.env.SMTP_USER}>`,
       to: email,
@@ -473,9 +483,11 @@ The DharmaMind Team
         'X-Signup-ID': signupId
       }
     });
+    console.log(`✅ Welcome email sent successfully! MessageId: ${info.messageId}`);
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('❌ Welcome email failed:', error.message);
+    console.error('❌ Full error:', JSON.stringify(error, null, 2));
     return { success: false, error: error.message };
   }
 }
@@ -527,6 +539,82 @@ exports.handler = async (event, context) => {
   // Health check endpoint
   if (event.httpMethod === 'GET') {
     const path = event.path || '';
+    const queryParams = event.queryStringParameters || {};
+    
+    // Test email endpoint - for debugging
+    if (queryParams.test === 'email') {
+      console.log('🧪 Testing email configuration...');
+      console.log(`SMTP_HOST: ${process.env.SMTP_HOST || 'NOT SET'}`);
+      console.log(`SMTP_PORT: ${process.env.SMTP_PORT || 'NOT SET'}`);
+      console.log(`SMTP_USER: ${process.env.SMTP_USER ? process.env.SMTP_USER.substring(0, 5) + '***' : 'NOT SET'}`);
+      console.log(`SMTP_PASS: ${process.env.SMTP_PASS ? '***SET (' + process.env.SMTP_PASS.length + ' chars)***' : 'NOT SET'}`);
+      console.log(`ADMIN_EMAIL: ${process.env.ADMIN_EMAIL || 'NOT SET'}`);
+      
+      if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: 'SMTP credentials not configured',
+            smtp_user_set: !!process.env.SMTP_USER,
+            smtp_pass_set: !!process.env.SMTP_PASS,
+            smtp_host: process.env.SMTP_HOST || 'NOT SET',
+            smtp_port: process.env.SMTP_PORT || 'NOT SET'
+          })
+        };
+      }
+      
+      try {
+        const transporter = createTransporter();
+        
+        // Verify connection
+        console.log('🔌 Verifying SMTP connection...');
+        await transporter.verify();
+        console.log('✅ SMTP connection verified!');
+        
+        // Send test email
+        const testEmail = process.env.ADMIN_EMAIL || process.env.SMTP_USER;
+        console.log(`📧 Sending test email to: ${testEmail}`);
+        
+        const info = await transporter.sendMail({
+          from: `"DharmaMind Test" <${process.env.SMTP_USER}>`,
+          to: testEmail,
+          subject: '✅ DharmaMind Email Test - It Works!',
+          text: 'If you received this email, your SMTP configuration is working correctly!',
+          html: '<h1>✅ Email Test Successful!</h1><p>Your DharmaMind waitlist email system is working correctly.</p><p>Time: ' + new Date().toISOString() + '</p>'
+        });
+        
+        console.log(`✅ Test email sent! MessageId: ${info.messageId}`);
+        
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            success: true,
+            message: 'Test email sent successfully!',
+            messageId: info.messageId,
+            sentTo: testEmail
+          })
+        };
+      } catch (error) {
+        console.error('❌ Email test failed:', error.message);
+        console.error('❌ Full error:', error);
+        
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: error.message,
+            errorCode: error.code,
+            errorCommand: error.command,
+            smtp_host: process.env.SMTP_HOST || 'smtp.gmail.com',
+            smtp_port: process.env.SMTP_PORT || '587'
+          })
+        };
+      }
+    }
     
     // Stats endpoint (protected)
     if (path.includes('/stats') && event.headers['x-admin-key'] === process.env.ADMIN_KEY) {
