@@ -327,7 +327,8 @@
         /* Critical CSS - Above the fold */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-        body{font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+        /* Font fallback to prevent CLS - match Inter metrics */
+        body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
         img{display:block;max-width:100%;height:auto}
         #preloader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%);transition:opacity .5s}
         .container{width:100%;margin:0 auto;padding:0 1rem}
@@ -336,16 +337,24 @@
         @media(min-width:1024px){.container{max-width:1024px}}
         @media(min-width:1280px){.container{max-width:1280px}}
         .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-        /* Prevent CLS - Reserve space for common elements */
-        header{min-height:80px}
-        .hero-section{min-height:100vh}
+        /* CRITICAL: Prevent CLS by reserving exact space */
+        header{min-height:80px;height:80px}
+        .hero-section,section.relative.min-h-screen{min-height:100vh}
+        /* Font display optimization */
+        @font-face{font-family:'Inter';font-display:swap;src:local('Inter')}
+        /* Reserve space for dynamic content to prevent CLS */
+        [data-counter]{min-width:2ch;display:inline-block}
+        .waitlist-count{min-width:3ch;display:inline-block}
+        /* Aspect ratio boxes for images */
+        .aspect-square{aspect-ratio:1/1}
+        .logo-container{width:80px;height:80px;contain:strict}
     </style>
     
     <!-- Preload Critical Resources -->
     <link rel="preload" href="logo.webp" as="image" fetchpriority="high">
     
-    <!-- Google Fonts - display=swap prevents FOIT -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - display=optional prevents layout shift (uses fallback if slow) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional" rel="stylesheet">
     
     <!-- Tailwind CSS - Must load synchronously to prevent CLS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -937,12 +946,12 @@
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-dharma-primary text-white px-4 py-2 rounded-md z-50">Skip to main content</a>
     
     <!-- Header -->
-    <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200/50 shadow-sm">
+    <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200/50 shadow-sm" style="height:80px;contain:layout style">
         <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-5" role="navigation" aria-label="Main navigation">
             <div class="flex justify-between items-center">
                 <!-- Logo -->
                 <a href="/" class="flex items-center space-x-4 group cursor-pointer transition-all duration-300 hover:opacity-80">
-                    <div class="relative transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="relative transform group-hover:scale-105 transition-transform duration-300" style="width:44px;height:44px">
                         <img src="logo.webp" alt="DharmaMind Logo" width="44" height="44" class="w-11 h-11 object-contain rounded-xl shadow-sm">
                         <div class="absolute inset-0 rounded-xl bg-gradient-to-br from-white/20 to-transparent"></div>
                     </div>
@@ -984,9 +993,9 @@
 
     <main id="main-content">
         <!-- Hero Section - Premium Enterprise Waitlist Design -->
-        <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100" style="contain:layout">
             <!-- Animated Background Elements -->
-            <div class="absolute inset-0">
+            <div class="absolute inset-0" aria-hidden="true">
                 <!-- Subtle gradient orbs -->
                 <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-r from-amber-400/10 to-yellow-500/10 rounded-full blur-3xl"></div>
                 <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-gradient-to-r from-gray-200/40 to-gray-300/30 rounded-full blur-3xl"></div>
@@ -1033,10 +1042,10 @@
                             Enterprise-grade AI life coaching powered by ancient Dharma wisdom. Make better decisions, find clarity, and live with purpose.
                         </p>
                         
-                        <!-- Key Stats Row -->
-                        <div class="grid grid-cols-3 gap-6 mb-10 py-6 border-y border-gray-200">
+                        <!-- Key Stats Row - Fixed height to prevent CLS -->
+                        <div class="grid grid-cols-3 gap-6 mb-10 py-6 border-y border-gray-200" style="min-height:88px">
                             <div class="text-center lg:text-left">
-                                <div class="text-2xl sm:text-3xl font-bold text-gray-900"><span data-counter="waitlist" class="waitlist-count">43</span>+</div>
+                                <div class="text-2xl sm:text-3xl font-bold text-gray-900" style="min-width:60px"><span data-counter="waitlist" class="waitlist-count" style="min-width:40px;display:inline-block">43</span>+</div>
                                 <div class="text-sm text-gray-500 font-medium">Early Access</div>
                             </div>
                             <div class="text-center lg:text-left">
