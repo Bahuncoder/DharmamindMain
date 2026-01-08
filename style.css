@@ -1,10 +1,25 @@
-and /* Professional DharmaMind Styles */
+/* Professional DharmaMind Styles */
 :root {
     --dharma-primary: #2d3748;
     --dharma-secondary: #4a5568;
     --dharma-light: #f7fafc;
     --dharma-accent: #e2e8f0;
     --dharma-dark: #1a202c;
+}
+
+/* Performance: Force GPU acceleration for animated elements */
+.animate-pulse, .animate-bounce, [class*="animate-"] {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Performance: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 * {

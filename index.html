@@ -25,7 +25,7 @@
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="DharmaMind - Ethical AI with Soul | Dharma-Powered Life Coach & Spiritual Guide">
     <meta property="og:description" content="Best Ethical AI Life Coach 2025. Dharma-powered AI companion for conscious living, spiritual growth, mental wellness & wise decision making. Responsible AI built on Vedic wisdom, Bhagavad Gita & ancient dharmic principles. AI with conscience that aligns with your values. Join 10,000+ seekers on waitlist.">
-    <meta property="og:image" content="https://dharmamind.ai/logo.jpeg">
+    <meta property="og:image" content="https://dharmamind.ai/logo.webp">
     <meta property="og:url" content="https://dharmamind.ai">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DharmaMind AI">
@@ -39,15 +39,15 @@
     <meta name="twitter:creator" content="@SudipPaudel">
     <meta name="twitter:title" content="DharmaMind - Ethical AI with Soul | Dharma-Powered Spiritual Guide">
     <meta name="twitter:description" content="🙏 Ethical AI Life Coach powered by Dharma. Conscious AI with soul for spiritual growth, inner peace & wise living. Built on Vedic wisdom & Bhagavad Gita. Responsible AI that cares. Join 10,000+ seekers! ✨">
-    <meta name="twitter:image" content="https://dharmamind.ai/logo.jpeg">
+    <meta name="twitter:image" content="https://dharmamind.ai/logo.webp">
     <meta name="twitter:image:alt" content="DharmaMind - Ethical AI Powered by Dharma for Spiritual Growth">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://dharmamind.ai">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/jpeg" href="logo.jpeg">
-    <link rel="apple-touch-icon" href="logo.jpeg">
+    <link rel="icon" type="image/jpeg" href="logo.webp">
+    <link rel="apple-touch-icon" href="logo.webp">
     
     <!-- Schema.org JSON-LD - Enhanced for SEO -->
     <script type="application/ld+json">
@@ -87,7 +87,7 @@
             "url": "https://dharmamind.ai",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://dharmamind.ai/logo.jpeg"
+                "url": "https://dharmamind.ai/logo.webp"
             },
             "founder": {
                 "@type": "Person",
@@ -106,7 +106,7 @@
         "name": "DharmaMind AI",
         "alternateName": "DharmaMind",
         "url": "https://dharmamind.ai",
-        "logo": "https://dharmamind.ai/logo.jpeg",
+        "logo": "https://dharmamind.ai/logo.webp",
         "description": "Best Ethical AI Life Coach & Therapist 2025. Dharma-powered AI for personal growth, life guidance, mental health support, conscious living, and ethical decision making. Built on responsible AI principles. Trusted by 10,000+ users.",
         "founder": {
             "@type": "Person",
@@ -336,17 +336,19 @@
         @media(min-width:1024px){.container{max-width:1024px}}
         @media(min-width:1280px){.container{max-width:1280px}}
         .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+        /* Prevent CLS - Reserve space for common elements */
+        header{min-height:80px}
+        .hero-section{min-height:100vh}
     </style>
     
     <!-- Preload Critical Resources -->
-    <link rel="preload" href="logo.jpeg" as="image" fetchpriority="high">
+    <link rel="preload" href="logo.webp" as="image" fetchpriority="high">
     
-    <!-- Google Fonts with display=swap for faster rendering -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+    <!-- Google Fonts - display=swap prevents FOIT -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS - loaded async -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <!-- Tailwind CSS - Must load synchronously to prevent CLS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Custom Tailwind Config -->
     <script>
@@ -754,7 +756,7 @@
             <div class="relative w-32 h-32 mx-auto mb-8">
                 <div class="absolute inset-0 bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600 rounded-3xl animate-pulse shadow-2xl"></div>
                 <div class="absolute inset-2 bg-white rounded-2xl flex items-center justify-center">
-                    <img src="logo.jpeg" alt="DharmaMind Logo" width="80" height="80" class="w-20 h-20 object-contain rounded-xl">
+                    <img src="logo.webp" alt="DharmaMind Logo" width="80" height="80" class="w-20 h-20 object-contain rounded-xl">
                 </div>
             </div>
             
@@ -941,7 +943,7 @@
                 <!-- Logo -->
                 <a href="/" class="flex items-center space-x-4 group cursor-pointer transition-all duration-300 hover:opacity-80">
                     <div class="relative transform group-hover:scale-105 transition-transform duration-300">
-                        <img src="logo.jpeg" alt="DharmaMind Logo" width="44" height="44" class="w-11 h-11 object-contain rounded-xl shadow-sm">
+                        <img src="logo.webp" alt="DharmaMind Logo" width="44" height="44" class="w-11 h-11 object-contain rounded-xl shadow-sm">
                         <div class="absolute inset-0 rounded-xl bg-gradient-to-br from-white/20 to-transparent"></div>
                     </div>
                     <div>
@@ -2025,7 +2027,7 @@
                                 <div class="h-full bg-gradient-to-b from-gray-50 to-white p-4 pb-20">
                                     <!-- Header -->
                                     <div class="flex items-center space-x-3 mb-6 pb-4 border-b border-gray-200">
-                                        <img src="logo.jpeg" alt="DharmaMind" width="40" height="40" loading="lazy" class="w-10 h-10 rounded-full shadow-md">
+                                        <img src="logo.webp" alt="DharmaMind" width="40" height="40" loading="lazy" class="w-10 h-10 rounded-full shadow-md">
                                         <div>
                                             <div class="font-semibold text-gray-700">DharmaMind AI</div>
                                             <div class="text-xs text-gray-600 flex items-center">
@@ -2046,7 +2048,7 @@
                                         
                                         <!-- AI Response -->
                                         <div class="flex items-start space-x-3">
-                                            <img src="logo.jpeg" alt="DharmaMind" width="32" height="32" loading="lazy" class="w-8 h-8 rounded-full flex-shrink-0 mt-1">
+                                            <img src="logo.webp" alt="DharmaMind" width="32" height="32" loading="lazy" class="w-8 h-8 rounded-full flex-shrink-0 mt-1">
                                             <div class="bg-white rounded-2xl rounded-bl-md px-4 py-3 shadow-md border border-gray-100 max-w-xs">
                                                 <p class="text-sm text-gray-700 mb-2">This touches on your dharma - your life's purpose. Let me help you explore this from a wisdom perspective.</p>
                                                 <p class="text-sm text-gray-700">Consider: Does this role allow you to use your unique gifts to serve others? Sometimes the highest-paying path isn't the most fulfilling one.</p>
@@ -2055,7 +2057,7 @@
                                         
                                         <!-- Typing Indicator -->
                                         <div class="flex items-center space-x-3">
-                                            <img src="logo.jpeg" alt="DharmaMind" width="32" height="32" loading="lazy" class="w-8 h-8 rounded-full flex-shrink-0">
+                                            <img src="logo.webp" alt="DharmaMind" width="32" height="32" loading="lazy" class="w-8 h-8 rounded-full flex-shrink-0">
                                             <div class="bg-white rounded-2xl rounded-bl-md px-4 py-3 shadow-md border border-gray-100">
                                                 <div class="flex space-x-1">
                                                     <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
@@ -2252,7 +2254,7 @@
                         <!-- Chat Interface Demo -->
                         <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-md mx-auto">
                             <div class="flex items-center space-x-3 mb-4 pb-4 border-b border-gray-200">
-                                <img src="logo.jpeg" alt="DharmaMind" width="32" height="32" loading="lazy" class="w-8 h-8 rounded-full">
+                                <img src="logo.webp" alt="DharmaMind" width="32" height="32" loading="lazy" class="w-8 h-8 rounded-full">
                                 <div>
                                     <div class="font-semibold text-dharma-text">DharmaMind</div>
                                     <div class="text-xs text-gray-600 flex items-center">
@@ -2733,7 +2735,7 @@
                     <div class="lg:col-span-4">
                         <div class="flex items-center gap-3 mb-6">
                             <div class="relative">
-                                <img src="logo.jpeg" alt="DharmaMind Logo" width="48" height="48" loading="lazy" class="w-12 h-12 rounded-xl shadow-lg">
+                                <img src="logo.webp" alt="DharmaMind Logo" width="48" height="48" loading="lazy" class="w-12 h-12 rounded-xl shadow-lg">
                                 <div class="absolute inset-0 rounded-xl bg-gradient-to-br from-white/10 to-transparent"></div>
                             </div>
                             <div>
